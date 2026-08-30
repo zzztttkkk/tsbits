@@ -4,6 +4,7 @@ import { kind2fmt } from "./layout.fmt.ts";
 export interface ILayoutOptions {
     MONTH_SHORT?: [string, string, string, string, string, string, string, string, string, string, string, string];
     MONTH_LONG?: [string, string, string, string, string, string, string, string, string, string, string, string];
+    WEEKDAY_MIN?: [string, string, string, string, string, string, string];
     WEEKDAY_SHORT?: [string, string, string, string, string, string, string];
     WEEKDAY_LONG?: [string, string, string, string, string, string, string];
     MERIDIEM?: {
@@ -12,7 +13,7 @@ export interface ILayoutOptions {
         am: string;
         pm: string;
     };
-    tz?: string;
+    TZ?: string;
 }
 
 export type TimeValue =
@@ -70,10 +71,7 @@ function topdt(time: TimeValue, opts?: ILayoutOptions): Temporal.PlainDateTime {
         return time;
     }
     if (time instanceof Temporal.Instant) {
-        return time.toZonedDateTimeISO(opts?.tz ?? Temporal.Now.timeZoneId()).toPlainDateTime();
-    }
-    if (time instanceof Temporal.ZonedDateTime) {
-        return time.toPlainDateTime();
+        return time.toZonedDateTimeISO(opts?.TZ ?? Temporal.Now.timeZoneId()).toPlainDateTime();
     }
     return time.toPlainDateTime();
 }

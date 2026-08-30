@@ -8,6 +8,10 @@ export const MONTH_LONG = [
     "July", "August", "September", "October", "November", "December",
 ] as const;
 
+export const WEEKDAY_MIN = [
+    "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa",
+] as const;
+
 export const WEEKDAY_SHORT = [
     "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
 ] as const;

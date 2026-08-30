@@ -1,5 +1,5 @@
 import { Kind } from "./compile.ts";
-import { MONTH_LONG, MONTH_SHORT, WEEKDAY_LONG, WEEKDAY_SHORT } from "./consts.ts";
+import { MONTH_LONG, MONTH_SHORT, WEEKDAY_LONG, WEEKDAY_MIN, WEEKDAY_SHORT } from "./consts.ts";
 import type { ILayoutOptions, KindFmtFn, TimeValue } from "./layout.ts";
 
 function getOffset(kind: Kind.Z | Kind.ZZ, time: TimeValue, opts?: ILayoutOptions): string {
@@ -7,7 +7,7 @@ function getOffset(kind: Kind.Z | Kind.ZZ, time: TimeValue, opts?: ILayoutOption
         return kind === Kind.Z ? time.offset : time.offset.replace(":", "");
     }
     if (time instanceof Temporal.Instant) {
-        const offset = time.toZonedDateTimeISO(opts?.tz ?? Temporal.Now.timeZoneId()).offset
+        const offset = time.toZonedDateTimeISO(opts?.TZ ?? Temporal.Now.timeZoneId()).offset
         return kind === Kind.Z ? offset : offset.replace(":", "");
     }
     throw new Error(`Z/ZZ can not apply for PlainDate/PlainDateTime`);
@@ -43,7 +43,7 @@ export function kind2fmt(kind: Kind): KindFmtFn {
             return tv => `${tv.dayOfWeek % 7}`;
         }
         case Kind.dd: {
-            return (tv, _, opts) => (opts?.WEEKDAY_SHORT ?? WEEKDAY_SHORT)[tv.dayOfWeek % 7].slice(0, 2);
+            return (tv, _, opts) => (opts?.WEEKDAY_MIN ?? WEEKDAY_MIN)[tv.dayOfWeek % 7];
         }
         case Kind.ddd: {
             return (tv, _, opts) => (opts?.WEEKDAY_SHORT ?? WEEKDAY_SHORT)[tv.dayOfWeek % 7];
